@@ -1,10 +1,5 @@
-import axios from "axios";
 import type { Note, CreateNoteDto, UpdateNoteDto } from "../types/note";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:3000/api",
-  timeout: 5000,
-});
+import { api } from "./client";
 
 export async function fetchNotes(): Promise<Note[]> {
   const res = await api.get<Note[]>("/notes");

@@ -2,34 +2,39 @@ import { prisma } from "../config/prisma.js";
 import { CreateNoteInput, UpdateNoteInput } from "../schemas/note.schema.js";
 
 export const noteService = {
-  getAll() {
+  getAllByUser(userId: number) {
     return prisma.note.findMany({
-orderBy: { createdAt: "desc" },
+      where: { userId },
+      orderBy: { createdAt: "desc" },
     });
   },
 
-  getById(id: number) {
-    return prisma.note.findUnique({
-      where: { id },
+  getByIdForUser(id: number, userId: number) {
+    return prisma.note.findFirst({
+      where: { id, userId },
     });
   },
 
-  create(data: CreateNoteInput) {
+  create(userId: number, data: CreateNoteInput) {
     return prisma.note.create({
-      data,
+      data: {
+        ...data,
+        userId,
+      },
     });
   },
 
-  update(id: number, data: UpdateNoteInput) {
+  update(id: number, userId: number, data: UpdateNoteInput) {
     return prisma.note.update({
-      where: { id },
+      where: { id, userId },
       data,
     });
   },
 
-  delete(id: number) {
+  delete(id: number, userId: number) {
     return prisma.note.delete({
-      where: { id },
+      where: { id, userId },
     });
   },
 };
+

@@ -1,40 +1,44 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  const passwordHash = await bcrypt.hash("password123", 10);
+
+  const user = await prisma.user.upsert({
+    where: { email: "test@example.com" },
+    update: {},
+    create: {
+      email: "test@example.com",
+      name: "Test User",
+      passwordHash,
+    },
+  });
+
+  // await prisma.note.deleteMany();
+
   await prisma.note.createMany({
     data: [
       {
         title: "Идеи для нового проекта",
         content: "Мини-приложение заметок, простой CRUD, Vue + Node.",
+        userId: user.id,
       },
       {
-        title: "Планы на неделю",
-        content: "Закончить учебный проект, сходить в спортзал, купить книги.",
+        title: "Список покупок",
+        content: "Молоко, хлеб, кофе",
+        userId: user.id,
       },
-      {
-        title: "Список фильмов для просмотра",
-        content: "Интерстеллар, Начало, Марсианин, Остров проклятых.",
-      },
-      {
-        title: "Напоминание",
-        content: "Проверить настройки сервера и обновить зависимости.",
-      },
-      {
-        title: "Мысли",
-        content: "Иногда важно просто выписать идеи, чтобы освободить голову.",
-      }
     ],
   });
-
-  console.log("Seeding completed (notes created)!");
 }
 
 main()
-  .then(() => prisma.$disconnect())
-  .catch(async (err) => {
-    console.error(err);
-    await prisma.$disconnect();
+  .catch((e) => {
+    console.error(e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

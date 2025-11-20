@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const rawPort = process.env.PORT ?? "3000";
@@ -8,13 +9,12 @@ if (Number.isNaN(PORT)) {
   throw new Error(`Invalid PORT value: ${rawPort}`);
 }
 
-const DATABASE_URL = process.env.DATABASE_URL;
-
-if (!DATABASE_URL) {
-  throw new Error("DATABASE_URL is not defined in .env");
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not set in environment");
 }
 
 export const env = {
   PORT,
-  DATABASE_URL,
+  JWT_SECRET,
 };

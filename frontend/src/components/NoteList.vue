@@ -21,9 +21,7 @@ function onEdit(note: Note) {
 }
 
 function onDelete(id: number) {
-  if (confirm("Удалить эту заметку?")) {
-    emit("delete", id);
-  }
+  emit("delete", id);
 }
 </script>
 
@@ -32,7 +30,7 @@ function onDelete(id: number) {
     <h2>Заметки</h2>
 
     <div v-if="loading">Загружаем заметки...</div>
-    <div v-else-if="!notes.length">Упс! Похоже пока нет ни одной заметки.</div>
+    <div v-else-if="!notes.length">Упс! Похоже нет ни одной заметки по фильтру или вообще.</div>
 
     <ul v-else>
       <li v-for="note in notes" :key="note.id" class="note-item">
@@ -57,14 +55,14 @@ function onDelete(id: number) {
         </p>
 
         <div class="meta">
-          <span
-            >Создано:
-            {{ new Date(note.createdAt).toLocaleString() }}</span
-          >
-          <span
-            >Обновлено:
-            {{ new Date(note.updatedAt).toLocaleString() }}</span
-          >
+          <span>
+            Создано:
+            {{ new Date(note.createdAt).toLocaleString() }}
+          </span>
+          <span>
+            Обновлено:
+            {{ new Date(note.updatedAt).toLocaleString() }}
+          </span>
         </div>
       </li>
     </ul>
@@ -73,14 +71,14 @@ function onDelete(id: number) {
 
 <style scoped>
 .note-list {
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
-  background: #111;
+  background: var(--bg-elevated);
 }
 
 .note-item {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--border-color);
   padding: 8px 0;
 }
 
@@ -113,7 +111,7 @@ function onDelete(id: number) {
 
 .meta {
   font-size: 0.8rem;
-  color: #aaa;
+  color: var(--text-muted);
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -126,10 +124,24 @@ function onDelete(id: number) {
 
 .actions button {
   background: transparent;
-  border: 1px solid #555;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 2px 6px;
   cursor: pointer;
-  color: #ddd;
+  color: var(--text-color);
+}
+
+.actions button:hover {
+  border-color: var(--accent-color);
+}
+
+@media (max-width: 600px) {
+  .note-list {
+    padding: 12px;
+  }
+
+  .note-header {
+    align-items: flex-start;
+  }
 }
 </style>

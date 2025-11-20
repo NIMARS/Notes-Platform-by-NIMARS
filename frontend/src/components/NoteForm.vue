@@ -65,7 +65,7 @@ function onCancel() {
 </script>
 
 <template>
-  <form class="note-form" @submit.prevent="onSubmit">
+   <form class="note-form" @submit.prevent="onSubmit">
     <h2>{{ isEditMode ? "Редактировать заметку" : "Создать заметку" }}</h2>
 
     <div class="field">
@@ -114,11 +114,11 @@ function onCancel() {
 
 <style scoped>
 .note-form {
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
-  background: #111;
+  background: var(--bg-elevated);
 }
 
 .field {
@@ -136,14 +136,14 @@ function onCancel() {
 .field textarea {
   padding: 6px 8px;
   border-radius: 4px;
-  border: 1px solid #444;
-  background: #222;
-  color: #f0f0f0;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-color);
 }
+
 .field textarea {
-  resize: vertical;
-  min-height: 120px;
-  min-width: 318px;
+  resize: vertical; /* только вертикально */
+  min-height: 120px; /* не сжимаем ниже "нормального" размера */
 }
 
 .checkbox {
@@ -163,6 +163,8 @@ button {
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  background: var(--accent-color);
+  color: #ffffff;
 }
 
 button[disabled] {
@@ -172,7 +174,7 @@ button[disabled] {
 
 button.secondary {
   background: transparent;
-  border: 1px solid #555;
-  color: #ddd;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 </style>

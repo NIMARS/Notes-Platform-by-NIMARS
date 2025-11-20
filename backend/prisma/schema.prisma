@@ -7,6 +7,17 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model User {
+    id           Int      @id @default(autoincrement())
+    email        String   @unique
+    name         String?
+    passwordHash String
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    notes Note[]
+}
+
 model Note {
     id        Int      @id @default(autoincrement())
     title     String   @db.VarChar(255)
@@ -15,5 +26,10 @@ model Note {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+
+    @@unique([id, userId], map: "uidx_notes_id_userId")
     @@index([createdAt, id], map: "idx_notes_createdAt_id")
+    @@index([userId, createdAt, id], map: "idx_notes_user_createdAt_id")
 }
