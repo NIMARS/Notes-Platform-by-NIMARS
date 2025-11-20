@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: notes_platform_nimars_db
+    environment:
+      POSTGRES_USER: notefstest
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: notefsdb
+    volumes:
+      - notes_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: notes_platform_nimars_backend
+    environment:
+      DATABASE_URL: postgresql://notefstest:password123@db:5432/notefsdb?schema=public
+      PORT: 3000
+      JWT_SECRET: super_secret_key_change_me
+      NODE_ENV: production
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: notes_platform_nimars_frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    environment:
+      VITE_API_URL: "http://localhost:3000/api"
+
+volumes:
+  notes_pgdata:
