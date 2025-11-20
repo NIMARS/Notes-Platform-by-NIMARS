@@ -1,6 +1,6 @@
 {
   "name": "notes-platform-by-nimars",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Тестовое задание для Techworks [https://github.com/TechworksDev]",
   "main": "dist/server.js",
   "scripts": {
